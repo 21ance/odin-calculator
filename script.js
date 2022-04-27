@@ -1,28 +1,56 @@
 const solution = document.querySelector('#solution')
 const result = document.querySelector('#result')
-const numbers = document.querySelectorAll('.left .rows button')
+const btnNum = document.querySelectorAll('button')
+const btnOp = document.querySelectorAll('.number-operators .right button')
 const clear = document.querySelector('#clear')
+const btnEquals = document.querySelector('#equals')
 
-let number1 = ''
-let number2 = ''
-let number3 = ''
+let screenNumber = ''
+let number1 = 0
+let number2 = 0
+let number3 = 0
+let op = ''
 
+function populateScreen() {
+    btnNum.forEach((number) => {
+        if (number.id >= 0) {
+            number.addEventListener('click', () => {
 
-function populateScreen(){
-    numbers.forEach((number)=>{
-        if(number.id >= 0){
-            number.addEventListener('click', () =>{
-                number1 += `${number.id}`
-                
-                result.textContent = `${number1}`
-                solution.textContent = `${number1}`
-            })  
+                screenNumber += `${number.id}`
+
+                result.textContent = `${screenNumber}`
+            })
         }
     })
 }
 
+function saveNumbers() {
+    btnOp.forEach((operator) => {
+        operator.addEventListener('click', () => {
 
-let test = 0
+            switch (operator.id) {
+                case '+':
+                    number1 = +screenNumber
+                    op = operator.id
+                    console.log(number1)
+                    solution.textContent = `${number1} ${operator.id}`
+                    result.textContent = number2
+                    screenNumber = ''
+            }
+        })
+    })
+}
+saveNumbers()
+
+function equals() {
+    btnEquals.addEventListener('click', () => {
+        number2 = +screenNumber
+        number3 = operate(op, number1, number2)
+        solution.textContent = `${number1} ${op} ${number2}`
+        result.textContent = `${number3}`
+    })
+}
+equals()
 
 function add(num1, num2) {
     return num1 + num2;
@@ -40,28 +68,18 @@ function divide(num1, num2) {
     return num1 / num2;
 }
 
-function operate() {
-
-}
-
 function operate(operator, num1, num2) {
     switch (operator) {
         case '+':
-            test = add(num1, num2)
-            break
+            return add(num1, num2)
         case '-':
-            test = subtract(num1, num2)
-            break
+            return subtract(num1, num2)
         case '*':
-            test = multiply(num1, num2)
-            break
+            return multiply(num1, num2)
         case '/':
-            test = divide(num1, num2)
-            break
+            return divide(num1, num2)
     }
 }
 
-operate('/', 10, 10)
 populateScreen()
-console.log(test)
 // console.log(operate('-', 10, 10))

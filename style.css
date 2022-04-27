@@ -33,6 +33,7 @@ body {
     align-items: center;
     justify-content: flex-end;
     padding: 15px;
+    width: 400px;
 }
 
 .bot-screen {
@@ -82,7 +83,7 @@ body {
     /* transition: 0.3s; */
 }
 
-.bot-screen button {
+.bot-screen button{
     padding: 20px;
     border-style: none;
     background-color: inherit;
