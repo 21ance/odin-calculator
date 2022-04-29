@@ -7,62 +7,54 @@ const btnOperators = document.querySelectorAll('[data-operator]')
 const btnClear = document.querySelector('[data-clear]')
 const btnEquals = document.querySelector('[data-equals]')
 
-let n1 = ''
-let n2 = ''
+let tempResult = ''
+let previousNum = ''
+let currentNum = ''
 let op = ''
 
-function populateDisplay() {
-    btnNumbers.forEach(number => {
-        number.addEventListener('click', (e) => {
+btnNumbers.forEach(number => {
+    number.addEventListener('click', e => {
 
-            botScreen.textContent += e.target.textContent
-        })
+        botScreen.textContent += e.target.textContent
+        currentNum = +botScreen.textContent
+
+
+
     })
-}
+})
 
-function callOperator() {
-    btnOperators.forEach(operator => {
-        operator.addEventListener('click', (e) => {
-
-            n1 = +botScreen.textContent
-            op = e.target.textContent
+btnOperators.forEach(operator => {
+    operator.addEventListener('click', e => {
+        op = e.target.textContent
 
 
-            botScreen.textContent = ''
-        })
+        previousNum = currentNum
+
+        topScreen.textContent = `${previousNum} ${op}`
+        botScreen.textContent = ''
+
+
+
     })
-}
+})
 
 btnEquals.addEventListener('click', e => {
 
-    n2 = +botScreen.textContent
+    // previousNum = currentNum
 
-    botScreen.textContent = `${operate(n1, n2, op)}`
+    tempResult = operate(previousNum, currentNum, op)
+    topScreen.textContent = `${previousNum} ${op} ${currentNum}`
+    botScreen.textContent = tempResult
+    currentNum = tempResult
 
-    console.log(n1)
-    console.log(n2)
-    console.log(op)
+    console.log(`prev num: ${previousNum}`)
+    console.log(`operator: ${op}`)
+    console.log(`current num: ${currentNum}`)
+    console.log(tempResult)
 
-    
 })
 
-function clearAll() {
-    btnClear.addEventListener('click', (e) => {
-        let n1 = ''
-        let n2 = ''
-        let op = ''
-        botScreen.textContent = ''
-        topScreen.textContent = ''
-        console.clear()
-    })
-}
-
-
-
-populateDisplay()
-callOperator()
-clearAll()
-//basic math functions
+//
 function add(number1, number2) {
     return number1 + number2
 }
@@ -79,7 +71,7 @@ function modulo(number1, number2) {
     return number1 % number2
 }
 
-//operate function that use above
+//
 function operate(number1, number2, operator) {
     switch (operator) {
         case '+':
