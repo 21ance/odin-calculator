@@ -14,33 +14,44 @@ let op = ''
 
 btnNumbers.forEach(number => {
     number.addEventListener('click', e => {
-
         botScreen.textContent += e.target.textContent
+        //continuously save the number on screen to currentNum
         currentNum = +botScreen.textContent
-
-
-
     })
 })
 
 btnOperators.forEach(operator => {
     operator.addEventListener('click', e => {
+
+        if (op !== '') {
+            tempResult = operate(previousNum, currentNum, op)
+            currentNum = tempResult
+            previousNum = ''
+            console.log(`prev num: ${previousNum}`)
+            console.log(`operator: ${op}`)
+            console.log(`current num: ${currentNum}`)
+        }
+
+
+        //saves the clicked operator string
         op = e.target.textContent
 
-
-        previousNum = currentNum
-
-        topScreen.textContent = `${previousNum} ${op}`
+        //display to screen
+        topScreen.textContent = `${currentNum} ${op}`
         botScreen.textContent = ''
 
+        //since currentNum is always overwritten when a number is inputted,
+        //save its value to another variable when an operator is clicked
+        previousNum = currentNum
+
+
+        //to solve... during here, the values for prevNum and currentNum is always the same
 
 
     })
 })
 
 btnEquals.addEventListener('click', e => {
-
-    // previousNum = currentNum
 
     tempResult = operate(previousNum, currentNum, op)
     topScreen.textContent = `${previousNum} ${op} ${currentNum}`
@@ -86,3 +97,4 @@ function operate(number1, number2, operator) {
             return modulo(number1, number2)
     }
 }
+
