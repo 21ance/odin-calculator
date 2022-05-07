@@ -11,23 +11,37 @@ let tempResult = ''
 let previousNum = ''
 let currentNum = ''
 let op = ''
+let chain = false
 
 btnNumbers.forEach(number => {
     number.addEventListener('click', e => {
+        if (tempResult != '') {
+            clearAll()
+        }
+
         botScreen.textContent += e.target.textContent
         //continuously save the bottom number of screen to currentNum
-        currentNum = +botScreen.textContent
+        currentNum = botScreen.textContent
     })
 })
 
 btnOperators.forEach(operator => {
     operator.addEventListener('click', e => {
+
         //do nothing if no user input yet
-        if (currentNum == '') return
+        //also stop chaining operation when currentNum is empty
+        if (currentNum == '') {
+            op = e.target.textContent
+            topScreen.textContent = `${previousNum} ${op}`
+            return
+        }
         //12 + 7 - 5 * 3 = should yield 42
         if (previousNum !== '') {
-            tempResult = operate(previousNum, currentNum, op)
-            currentNum = tempResult
+            currentNum = operate(previousNum, currentNum, op)
+
+
+            // tempResult = operate(previousNum, currentNum, op)
+            // currentNum = tempResult
         }
         //saves the clicked operator string
         op = e.target.textContent
@@ -36,14 +50,14 @@ btnOperators.forEach(operator => {
         topScreen.textContent = `${currentNum} ${op}`
         botScreen.textContent = ''
 
-        //since currentNum is always overwritten when a number is inputted,
-        //save its value to another variable when an operator is clicked
+        //transfer the value of currentNum to previousNum then reset it
         previousNum = currentNum
+        currentNum = ''
     })
 })
 
 btnEquals.addEventListener('click', e => {
-    if (previousNum == '') return
+    if (previousNum == '' || currentNum == '') return
     tempResult = operate(previousNum, currentNum, op)
     topScreen.textContent = `${previousNum} ${op} ${currentNum}`
     botScreen.textContent = tempResult
@@ -51,17 +65,20 @@ btnEquals.addEventListener('click', e => {
     previousNum = ''
 })
 
-btnClear.addEventListener('click', e => {
+btnClear.addEventListener('click', () => clearAll())
+
+
+function clearAll() {
     tempResult = ''
     previousNum = ''
     currentNum = ''
     op = ''
     topScreen.textContent = ''
     botScreen.textContent = ''
-})
+}
 //
 function add(number1, number2) {
-    return number1 + number2
+    return +number1 + +number2
 }
 function subtract(number1, number2) {
     return number1 - number2
@@ -95,4 +112,3 @@ function operate(number1, number2, operator) {
             return modulo(number1, number2)
     }
 }
-
