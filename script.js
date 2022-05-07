@@ -5,6 +5,8 @@ const btnNumbers = document.querySelectorAll('[data-number]')
 const btnOperators = document.querySelectorAll('[data-operator]')
 
 const btnClear = document.querySelector('[data-clear]')
+const btnDelete = document.querySelector('[data-delete]')
+const btnNegate = document.querySelector('[data-negate]')
 const btnEquals = document.querySelector('[data-equals]')
 
 let tempResult = ''
@@ -16,11 +18,12 @@ let chain = false
 btnNumbers.forEach(number => {
     number.addEventListener('click', e => {
         if (tempResult != '') {
-            clearAll()
+            tempResult = ''
+            botScreen.textContent = ''
         }
 
-        botScreen.textContent += e.target.textContent
         //continuously save the bottom number of screen to currentNum
+        botScreen.textContent += e.target.textContent
         currentNum = botScreen.textContent
     })
 })
@@ -38,12 +41,7 @@ btnOperators.forEach(operator => {
         //12 + 7 - 5 * 3 = should yield 42
         if (previousNum !== '') {
             currentNum = operate(previousNum, currentNum, op)
-
-
-            // tempResult = operate(previousNum, currentNum, op)
-            // currentNum = tempResult
         }
-        //saves the clicked operator string
         op = e.target.textContent
 
         //display to screen
@@ -56,7 +54,12 @@ btnOperators.forEach(operator => {
     })
 })
 
-btnEquals.addEventListener('click', e => {
+btnEquals.addEventListener('click', () => {
+    if ((op == '%' || op == '÷') && currentNum == 0) {
+        clearAll()
+        topScreen.textContent = '(╯°□°）╯︵ ┻━┻'
+        return
+    }
     if (previousNum == '' || currentNum == '') return
     tempResult = operate(previousNum, currentNum, op)
     topScreen.textContent = `${previousNum} ${op} ${currentNum}`
@@ -67,6 +70,16 @@ btnEquals.addEventListener('click', e => {
 
 btnClear.addEventListener('click', () => clearAll())
 
+btnDelete.addEventListener('click', () => {
+    botScreen.textContent = botScreen.textContent.slice(0, -1)
+    currentNum = botScreen.textContent
+})
+
+btnNegate.addEventListener('click', () => {
+    if(currentNum == 0) return
+    botScreen.textContent *= -1
+    currentNum = botScreen.textContent
+})
 
 function clearAll() {
     tempResult = ''
@@ -87,10 +100,6 @@ function multiply(number1, number2) {
     return number1 * number2
 }
 function divide(number1, number2) {
-    if (number2 == 0) {
-        botScreen.textContent = 'haha'
-        return
-    }
     return number1 / number2
 }
 function modulo(number1, number2) {
