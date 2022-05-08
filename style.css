@@ -1,51 +1,60 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-body{
+body {
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-image: linear-gradient(to right, #f0f0f0, #181925);
 
 }
 
-.calculator-container{
-    background-color: black;
-    padding: 10px;
+.calculator-container {
+    background-color: #000;
+    padding: 5px;
+    border-radius: 3px;
 }
 
-.screen{
+.screen {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: space-around;
-    background-color: black;
+    background-color: #181925;
     width: 320px;
     min-height: 80px;
     padding: 5px;
 }
 
-.screen p{
+.screen p {
     color: white;
 }
 
-.row{
+.row {
     display: flex;
 }
 
-button, button:disabled{
+button, button:disabled {
     background-color: #ffffff;
+    color: #000;
     height: 80px;
     width: 80px;
     font-size: 25px;
     border-style: none;
+    border: 1px solid;
+    border-color: #b2b2b2
 }
 
-button:hover{
+button:hover {
     background-color: rgb(219, 207, 207);
+}
+
+[data-operator], [data-delete], [data-clear], [data-negate] {
+    background-color: rgb(240, 240, 240);
 }
