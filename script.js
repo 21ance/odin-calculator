@@ -13,7 +13,6 @@ let tempResult = ''
 let previousNum = ''
 let currentNum = ''
 let op = ''
-let chain = false
 
 btnNumbers.forEach(number => {
     number.addEventListener('click', e => {
@@ -21,7 +20,6 @@ btnNumbers.forEach(number => {
             tempResult = ''
             botScreen.textContent = ''
         }
-
         //continuously save the bottom number of screen to currentNum
         botScreen.textContent += e.target.textContent
         currentNum = botScreen.textContent
@@ -30,7 +28,6 @@ btnNumbers.forEach(number => {
 
 btnOperators.forEach(operator => {
     operator.addEventListener('click', e => {
-
         //do nothing if no user input yet
         //also stop chaining operation when currentNum is empty
         if (currentNum == '') {
@@ -40,7 +37,7 @@ btnOperators.forEach(operator => {
         }
         //12 + 7 - 5 * 3 = should yield 42
         if (previousNum !== '') {
-            currentNum = operate(previousNum, currentNum, op)
+            currentNum = operate(previousNum, currentNum, op).toFixed(2).replace(/(\.0+|0+)$/, '')
         }
         op = e.target.textContent
 
@@ -61,7 +58,7 @@ btnEquals.addEventListener('click', () => {
         return
     }
     if (previousNum == '' || currentNum == '') return
-    tempResult = operate(previousNum, currentNum, op)
+    tempResult = operate(previousNum, currentNum, op).toFixed(2).replace(/(\.0+|0+)$/, '')
     topScreen.textContent = `${previousNum} ${op} ${currentNum}`
     botScreen.textContent = tempResult
     currentNum = tempResult
@@ -76,7 +73,7 @@ btnDelete.addEventListener('click', () => {
 })
 
 btnNegate.addEventListener('click', () => {
-    if(currentNum == 0) return
+    if (currentNum == 0) return
     botScreen.textContent *= -1
     currentNum = botScreen.textContent
 })
@@ -89,7 +86,7 @@ function clearAll() {
     topScreen.textContent = ''
     botScreen.textContent = ''
 }
-//
+
 function add(number1, number2) {
     return +number1 + +number2
 }
@@ -106,7 +103,6 @@ function modulo(number1, number2) {
     return number1 % number2
 }
 
-//
 function operate(number1, number2, operator) {
     switch (operator) {
         case '+':
